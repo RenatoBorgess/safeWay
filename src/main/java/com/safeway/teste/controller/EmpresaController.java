@@ -5,6 +5,7 @@ import com.safeway.teste.domain.Empresa;
 import com.safeway.teste.dto.EmpresaDTO;
 import com.safeway.teste.dto.EmpresaResponseDTO;
 import com.safeway.teste.service.EmpresaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,8 @@ public class EmpresaController {
     private EmpresaService empresaService;
 
     @PostMapping
-    public ResponseEntity<EmpresaDTO> criarEmpresa(@RequestBody EmpresaDTO empresaDTO) {
-        EmpresaDTO empresaCriada = empresaService.criarEmpresa(empresaDTO);
+    public ResponseEntity<EmpresaResponseDTO> criarEmpresa(@RequestBody @Valid EmpresaDTO empresaDTO) {
+        EmpresaResponseDTO empresaCriada = empresaService.criarEmpresa(empresaDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(empresaCriada);
     }
     @GetMapping

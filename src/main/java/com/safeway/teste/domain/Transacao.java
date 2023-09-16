@@ -10,11 +10,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Transacao {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
     private TipoTransacao tipo;
     private BigDecimal valor;
-    @ManyToOne
-    @JoinColumn(name = "empresa_id")
+    @OneToOne
+    @JoinColumn(name = "empresa_id", referencedColumnName = "id")
     private Empresa empresa;
 }

@@ -16,14 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/transacoes")
 public class TransacaoController {
 
-    @Autowired
-    private TransacaoService transacaoService;
 
-//    @PostMapping("/deposito")
-//    public ResponseEntity<Transacao> realizarDeposito(@RequestBody TransacaoDTO transacaoDTO) {
-//        Transacao transacao = transacaoService.realizarDeposito(transacaoDTO);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(transacao);
-//    }
+    private TransacaoService transacaoService;
+    public TransacaoController(TransacaoService transacaoService){
+        this.transacaoService = transacaoService;
+    }
+
+    @PostMapping("/deposito")
+    public ResponseEntity<Transacao> realizarDeposito(@RequestBody TransacaoDTO transacaoDTO) {
+        Transacao transacao = transacaoService.realizarDeposito(transacaoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(transacao);
+    }
 
     @PostMapping("/saque")
     public ResponseEntity<Transacao> realizarSaque(@RequestBody TransacaoDTO transacaoDTO) throws SaldoInsuficienteException {

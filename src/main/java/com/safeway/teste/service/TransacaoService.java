@@ -1,6 +1,7 @@
 package com.safeway.teste.service;
 
 import com.safeway.teste.domain.Empresa;
+import com.safeway.teste.domain.TipoTransacao;
 import com.safeway.teste.domain.Transacao;
 import com.safeway.teste.dto.TransacaoDTO;
 import com.safeway.teste.exception.SaldoInsuficienteException;
@@ -17,10 +18,23 @@ import java.util.Optional;
 public class TransacaoService {
 
     @Autowired
-    private TransacaoRepository transacaoRepository;
+   TransacaoRepository transacaoRepository;
 
     @Autowired
-    private EmpresaRepository empresaRepository;
+    EmpresaRepository empresaRepository;
+
+    public Transacao realizarDeposito(final TransacaoDTO transacaoDTO) {
+        Transacao transacao = new Transacao();
+        BeanUtils.copyProperties(transacaoDTO,transacao);
+        Empresa empresaValida = validarEmpresa(transacaoDTO.getIdentificador());
+        empresaValida.setSaldoConta(empresaValida.getSaldoConta().add(transacao.getValor()));
+        transacao.setEmpresa(empresaValida);
+        empresaValida.getTransacoes().add(transacao);
+        transacao = transacaoRepository.save(transacao);
+
+
+        return transacao;
+    }
 
     public Transacao realizarSaque(final TransacaoDTO transacaoDTO) throws SaldoInsuficienteException {
 
